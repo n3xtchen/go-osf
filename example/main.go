@@ -6,6 +6,9 @@ import (
 	"log"
 	"net"
 	"os"
+    "fmt"
+    "strings"
+    "github.com/n3xtchen/go-osf/register"
 )
 
 type options struct {
@@ -23,11 +26,11 @@ func init() {
 	}
 }
 
-func main() {
+func xxmain() {
 	log.Printf("listening on port %v", opt.port)
 
 	ln, err := net.Listen("tcp", ":"+opt.port)
-
+	
 	if err != nil {
 		log.Fatalf("listen error, err=%s", err)
 		return
@@ -57,3 +60,9 @@ func handleConn(conn net.Conn) {
 	}
 }
 
+
+func main() {
+	r := register.NewRegistryConf("test", "127.0.0.1")
+	paths := strings.Split("x/y/z/a", "/")
+	fmt.Printf("%s %s", paths, r)
+}

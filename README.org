@@ -1,0 +1,37 @@
+* go-osf
+
+** 架构
+
+#+BEGIN_SRC plantuml :file imgs/go-osf-arch.png
+
+@startuml
+sprite $bProcess jar:archimate/business-process
+sprite $aService jar:archimate/application-service
+sprite $aComponent jar:archimate/application-component
+
+rectangle "ZooKeeper"  as ZK <<$bProcess>> #yellow 
+rectangle "Clients"  as cli <<$bProcess>> #yellow
+rectangle "Server" as ser <<$bProcess>> #yellow
+
+ser -up-> ZK: 注册/更新服务
+cli -up-> ZK: 注册客户端,获取服务器
+ZK -down-> cli: 服务变更通知
+cli -right-> ser: RPC 调用
+
+@enduml
+
+#+END_SRC
+
+#+RESULTS:
+[[file:imgs/go-osf-arch.png]]
+
+
+服务端注册到 ZooKeeper 
+客户端注册到 Zookeeper, 获取对应服务的接口
+服务端更新 Zookeeper, 客户端通过监听 ZooKeeper 变更，进行相应处理
+
+
+** 框架组件
+
+
+Netflix Eureka：https://zhuanlan.zhihu.com/p/24829766
